@@ -1,0 +1,11 @@
+[mysqld]
+server-id =
+bind-address =
+gtid_mode=ON
+enforce-gtid-consistency=ON
+master-info-repository=TABLE
+report-host= mysql-master
+report-port = 3306
+log_bin = /var/log/mysql/mysql-bin.log
+relay-log = /var/log/mysql/mysql-relay-bin.log
+binlog-ignore-db = mysql

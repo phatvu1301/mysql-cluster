@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mysql-master:
+    image: mysql:8.0.30
+    # cap_add:
+    #   - SYS_NICE
+    hostname: mysql-master
+    volumes:
+      - ./mysql-ms/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql-ms/my.cnf:/etc/my.cnf
+      - ./mysql-ms/data:/var/lib/mysql
+      - ./mysql-ms/conf.d:/etc/mysql/conf.d/
+      - ./init-test:/init
+    environment:
+      - SERVER_ID=1
+      - BIND_ADDRESS=0.0.0.0
+      - TZ=Asia/Ho_Chi_Minh
+      - MYSQL_ROOT_PASSWORD=TtCSDA@2k22
+      - MYSQL_DATABASE=superset
+      - MYSQL_USER=superset
+      - MYSQL_PASSWORD=CpxVIVAS2k22
+  
+  mysql-slave:
+    image: mysql:8.0.30
+    # cap_add:
+    #   - SYS_NICE
+    hostname: mysql-slave
+    volumes:
+      - ./mysql-ms-slave/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql-ms-slavw/my.cnf:/etc/my.cnf
+      - ./mysql-ms-slave/data:/var/lib/mysql
+      - ./mysql-ms-slave/conf.d:/etc/mysql/conf.d/
+      - ./init-test:/init
+    environment:
+      - SERVER_ID=2
+      - BIND_ADDRESS=0.0.0.0
+      - INIT_MASTER_IP_4SLAVE=mysql-master 
+      - TZ=Asia/Ho_Chi_Minh
+      - MYSQL_ROOT_PASSWORD=TtCSDA@2k22
+      - MYSQL_DATABASE=superset
+      - MYSQL_USER=superset
+      - MYSQL_PASSWORD=CpxVIVAS2k22
