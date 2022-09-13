@@ -9,7 +9,7 @@ services:
     volumes:
       - ./mysql-ms/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./mysql-ms/my.cnf:/etc/my.cnf
-      - ./mysql-ms/data:/var/lib/mysql
+      # - ./mysql-ms/data:/var/lib/mysql
       - ./mysql-ms/conf.d:/etc/mysql/conf.d/
       - ./init-test:/init
     environment:
@@ -28,8 +28,8 @@ services:
     hostname: mysql-slave
     volumes:
       - ./mysql-ms-slave/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - ./mysql-ms-slavw/my.cnf:/etc/my.cnf
-      - ./mysql-ms-slave/data:/var/lib/mysql
+      - ./mysql-ms-slave/my.cnf:/etc/my.cnf
+      # - ./mysql-ms-slave/data:/var/lib/mysql
       - ./mysql-ms-slave/conf.d:/etc/mysql/conf.d/
       - ./init-test:/init
     environment:
