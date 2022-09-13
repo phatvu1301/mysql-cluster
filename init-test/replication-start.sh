@@ -3,7 +3,8 @@ DUMP_FILE="/tmp/$DB-export-$(date +"%Y%m%d%H%M%S").sql"
 
 USER=root
 PASS=$MYSQL_ROOT_PASSWORD
-#CREDENTIALS="-u$USER -p$USER"
+LOOP_BORDER=$(printf "%30s");
+
 CREDENTIALS="--defaults-extra-file=credentials.cnf"
 
 MASTER_HOST="$1"
@@ -21,7 +22,6 @@ fi
 # ------
 # Export database and read log position from master, while locked
 ##
-LOOP_BORDER=$(printf "%30s");
 echo ${LOOP_BORDER// /=}
 echo "I am Slave Node"
 echo "MASTER: $MASTER_HOST"
