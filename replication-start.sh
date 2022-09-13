@@ -42,25 +42,29 @@ EOSQL
 
 echo "  - Waiting for database to be locked"
 sleep 3
+# Take command to unlock after sleep
+mysql $CREDENTIALS -h $MASTER_HOST -ANe "UNLOCK TABLES;"
 
 # Dump the database (to the client executing this script) while it is locked
 echo "  - Dumping database to $DUMP_FILE"
 mysqldump $CREDENTIALS -h $MASTER_HOST --opt --all-databases > $DUMP_FILE
-mysql $CREDENTIALS -h $MASTER_HOST -ANe "UNLOCK TABLES;"
 echo "  - Dump complete."
 
 # Take note of the master log position at the time of dump
 MASTER_STATUS=$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $1 " " $2}')
-#echo "$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $1}')"
-#echo "$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $2}')"
 
-#LOG_FILE=$(echo $MASTER_STATUS | cut -f1 -d ' ')
-LOG_FILE=$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $1}')
-LOG_POS=$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $2}')
-#LOG_POS=$(echo $MASTER_STATUS | cut -f2 -d ' ')
+echo "Take note of the master log position at the time of dump"
+echo "$MASTER_STATUS"
+
+LOG_FILE=$(echo $MASTER_STATUS | cut -f1 -d ' ')
+# LOG_FILE=$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $1}')
+# LOG_POS=$(mysql $CREDENTIALS -h $MASTER_HOST -ANe "SHOW MASTER STATUS;" | awk '{print $2}')
+LOG_POS=$(echo $MASTER_STATUS | cut -f2 -d ' ')
 echo "  - Current log file is $LOG_FILE and log position is $LOG_POS"
 
 # When finished, kill the background locking command to unlock
+
+echo "$!"
 kill $! 2>/dev/null
 wait $! 2>/dev/null
 

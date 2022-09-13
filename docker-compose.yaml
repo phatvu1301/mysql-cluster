@@ -1,43 +1,47 @@
 version: '3.8'
 
 services:
-  mysql-master:
-    image: mysql:8.0.30
+  master1:
+    image: mysql-m-m:0.0.1
     # cap_add:
     #   - SYS_NICE
-    hostname: mysql-master
+    hostname: master1
+    container_name: master1
     volumes:
       - ./mysql-ms/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./mysql-ms/my.cnf:/etc/my.cnf
-      - ./mysql-ms/data:/var/lib/mysql
+      # - ./mysql-ms/data:/var/lib/mysql
       - ./mysql-ms/conf.d:/etc/mysql/conf.d/
-      - ./init-test:/init
+      # - ./init-test:/init
     environment:
       - SERVER_ID=1
-      - BIND_ADDRESS=0.0.0.0
+      - INIT_FROM_MASTER=master2 
+      - SL_USER=massl
       - TZ=Asia/Ho_Chi_Minh
-      - MYSQL_ROOT_PASSWORD=TtCSDA@2k22
+      - MYSQL_ROOT_PASSWORD=thisispassword123
       - MYSQL_DATABASE=superset
       - MYSQL_USER=superset
       - MYSQL_PASSWORD=CpxVIVAS2k22
   
-  mysql-slave:
-    image: mysql:8.0.30
+  master2:
+    image: mysql-m-m:0.0.1
     # cap_add:
     #   - SYS_NICE
-    hostname: mysql-slave
+    hostname: master2
+    container_name: master2
     volumes:
       - ./mysql-ms-slave/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./mysql-ms-slave/my.cnf:/etc/my.cnf
-      - ./mysql-ms-slave/data:/var/lib/mysql
+      # - ./mysql-ms-slave/data:/var/lib/mysql
       - ./mysql-ms-slave/conf.d:/etc/mysql/conf.d/
-      - ./init-test:/init
+      # - ./init-test:/init
     environment:
+      - INIT_CLUSTER=start
       - SERVER_ID=2
-      - BIND_ADDRESS=0.0.0.0
-      - INIT_MASTER_IP_4SLAVE=mysql-master 
+      - INIT_FROM_MASTER=master1
+      - SL_USER=slmas
       - TZ=Asia/Ho_Chi_Minh
-      - MYSQL_ROOT_PASSWORD=TtCSDA@2k22
+      - MYSQL_ROOT_PASSWORD=thisispassword123
       - MYSQL_DATABASE=superset
       - MYSQL_USER=superset
       - MYSQL_PASSWORD=CpxVIVAS2k22

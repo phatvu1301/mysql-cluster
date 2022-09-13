@@ -1,9 +1,0 @@
-[mysqld]
-server-id = $SERVER_ID
-bind-address = $BIND_ADDRESS
-gtid_mode=ON
-enforce-gtid-consistency=ON
-log_bin = /var/log/mysql/mysql-bin.log
-relay-log = /var/log/mysql/mysql-relay-bin.log
-binlog-ignore-db = "mysql"
-binlog-ignore-db = "sys"

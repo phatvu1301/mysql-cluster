@@ -1,7 +1,7 @@
 DB=$MYSQL_DATABASE
 DUMP_FILE="/tmp/$DB-export-$(date +"%Y%m%d%H%M%S").sql"
 
-USER=root
+USER=slave
 PASS=$MYSQL_ROOT_PASSWORD
 #CREDENTIALS="-u$USER -p$USER"
 CREDENTIALS="--defaults-extra-file=credentials.cnf"
