@@ -34,7 +34,6 @@ echo '========================================='
 
 if [[ ! -z "$INIT_MASTER_IP_4SLAVE" ]]; then
     bash ./replication-start.sh $INIT_MASTER_IP_4SLAVE 127.0.0.1 &
-#     echo $INIT_MASTER_IP_4SLAVE 
 fi
 
 # Call the parent image entrypoint
